@@ -4,8 +4,7 @@
 
 * [Introduction](#introduction)
     * [Unprivileged service accounts](#unprivileged-service-accounts)
-    * [Privileged service accounts in containers](#privileged-service-accounts
--in-containers)
+    * [Privileged service accounts in containers](#privileged-service-accounts-in-containers)
     * [Cloud SQL Proxy](#cloud-sql-proxy)
 * [Architecture](#architecture)
 * [Prerequisites](#prerequisites)
