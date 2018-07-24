@@ -41,11 +41,11 @@ Cloud SQL instance and reduce your applications knowledge of your infrastructure
 By default all Kubernetes Engine nodes are assigned the default Compute Engine service
 account. This service account is fairly high privilege and has access to many
 GCP services. Because of the way the Google Cloud SDK is setup, software that
-you write will use the credentials assigned to the compute engine instance it
-is running on. Since we don't want all of our containers to have the privileges
+you write will use the credentials assigned to the compute engine instance on which it
+is running. Since we don't want all of our containers to have the privileges
 that the default Compute Engine service account has, we need to make a
 least-privilege service account for our Kubernetes Engine nodes and then create more specific
-but still least-privilege service accounts for our containers.
+(but still least-privilege) service accounts for our containers.
 
 #### Privileged service accounts in containers
 The only two ways to get service account credentials are 1.) through your host
@@ -62,7 +62,7 @@ pre-packaged by Google as a Docker container that you can run alongside your
 application container in the same Kubernetes Engine pod.
 
 ## Architecture
-The application and its sidecar container are deployed in a single k8s pod
+The application and its sidecar container are deployed in a single Kubernetes (k8s) pod
 running on the only node in the Kubernetes Engine cluster. The application communicates with
 the Cloud SQL instance via the Cloud SQL Proxy process listening on localhost.
 
