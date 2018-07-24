@@ -1,0 +1,87 @@
+# Copyright 2018 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This is the only manifest in the project. It sets up a single pod with 1
+# replica. That pod contains two containers, pgAdmin and Cloud SQL Proxy. Both
+# containers rely on the GKE secrets that were added as part of the creation
+# scripts. There is no Service because we are using a very simple port-forward
+# to access the pod.
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: pgadmin4-deployment
+  labels:
+    app: pgadmin4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgadmin4
+  template:
+    metadata:
+      labels:
+        app: pgadmin4
+    spec:
+      volumes:
+        # If you made a secret as a file you can create a volume from it
+        - name: cloudsql-sa-creds
+          secret:
+            secretName: cloudsql-sa-creds
+      containers:
+          # This is the official pgAdmin 4 container
+        - image: dpage/pgadmin4
+          name: pgadmin4
+          # You can make environment variables from GKE secrets
+          # You can read them directly using 'secretKeyRef'
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: pgadmin-console
+                  key: user
+            - name: PGADMIN_DEFAULT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pgadmin-console
+                  key: password
+          ports:
+            - containerPort: 80
+              name: pgadmin4
+        # We are pulling the Cloud SQL Proxy container from the official Google
+        # container repository
+        - image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          name: cloudsql-proxy
+          # You can make environment variables from GKE configurations
+          # You can read them from a configmap directly with configMapKeyRef
+          env:
+            - name: INSTANCE_CONNECTION
+              valueFrom:
+                configMapKeyRef:
+                  name: connectionname
+                  key: connectionname
+          command: [
+            "/cloud_sql_proxy",
+            "-instances=$(INSTANCE_CONNECTION)=tcp:5432",
+            # We are accessing the secret file inside the volume.
+            # In most circumstances you would use environment variables but
+            # the Cloud SQL Proxy container wants a file so we give it one
+            "-credential_file=/secrets/cloudsql/credentials.json"
+          ]
+          # Once the volume is made earlier in the file you then mount the
+          # volume so you can access the secret file inside it
+          volumeMounts:
+            - name: cloudsql-sa-creds
+              mountPath: /secrets/cloudsql
+              readOnly: true
