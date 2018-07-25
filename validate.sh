@@ -25,6 +25,14 @@ help() {
   echo "./validate.sh INSTANCE_NAME"
 }
 
+CLUSTER_ZONE=$(gcloud config get-value compute/zone)
+
+export CLUSTER_ZONE
+if [ -z "$CLUSTER_ZONE" ]; then
+  echo "Make sure that compute/zone is set in gcloud config"
+  exit 1
+fi
+
 export INSTANCE_NAME=$1
 if [ -z "$INSTANCE_NAME" ] ; then
   help

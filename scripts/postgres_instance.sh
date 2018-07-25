@@ -37,7 +37,7 @@ until [  $COUNTER -lt 2 ]; do
     break
   fi
   sleep 10
-  let COUNTER=COUNTER-1
+  COUNTER=$(( COUNTER - 1 ))
 done
 
 if [[ $COUNTER -lt 2 ]]; then
