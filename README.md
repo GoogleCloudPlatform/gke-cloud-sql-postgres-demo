@@ -172,3 +172,5 @@ in an appropriate state to handle the request.
 You cannot reuse an instance name for up to a week after you have deleted an
 instance.
 https://cloud.google.com/sql/docs/mysql/delete-instance
+
+**This is not an officially supported Google product**
