@@ -17,10 +17,10 @@
   * [Resolution](#resolution)
 
 ## Introduction
-This demo shows how easy it is to connect an application in Kubernetes Engine to a Cloud SQL
-instance using the Cloud SQL Proxy container as a sidecar container. You will
-deploy a [Kubernetes
-Engine](https://cloud.google.com/kubernetes-engine/) (Kubernetes Engine)
+
+This demo shows how easy it is to connect an application in Kubernetes Engine to
+a Cloud SQL instance using the Cloud SQL Proxy container as a sidecar container.
+You will deploy a [Kubernetes Engine](https://cloud.google.com/kubernetes-engine/) (Kubernetes Engine)
 cluster and a [Cloud SQL](https://cloud.google.com/sql/docs/) Postgres instance
 and use the [Cloud SQL Proxy container](gcr.io/cloudsql-docker/gce-proxy:1.11)
 to allow communication between them.
@@ -48,12 +48,15 @@ least-privilege service account for our Kubernetes Engine nodes and then create 
 (but still least-privilege) service accounts for our containers.
 
 #### Privileged service accounts in containers
+
 The only two ways to get service account credentials are 1.) through your host
 instance, which as we discussed we don't want, or 2.) through a credentials
 file. This demo will show you how to get this credentials file into your
-container running in Kubernetes Engine so your application has the privileges it needs.
+container running in Kubernetes Engine so your application has the privileges
+it needs.
 
 #### Cloud SQL Proxy
+
 The Cloud SQL Proxy allows you to offload the burden of creating and
 maintaining a connection to your Cloud SQL instance to the Cloud SQL Proxy
 process. Doing this allows your application to be unaware of the connection
@@ -67,10 +70,10 @@ running on the only node in the Kubernetes Engine cluster. The application commu
 the Cloud SQL instance via the Cloud SQL Proxy process listening on localhost.
 
 The k8s manifest builds a single-replica Deployment object with two containers,
-pgAdmin and Cloud SQL Proxy. There are two secrets installed into the Kubernetes Engine
-cluster: the Cloud SQL instance connection information and a service account
-key credentials file, both used by the Cloud SQL Proxy containers Cloud SQL API
-calls.
+pgAdmin and Cloud SQL Proxy. There are two secrets installed into the Kubernetes
+Engine cluster: the Cloud SQL instance connection information and a service
+account key credentials file, both used by the Cloud SQL Proxy containers Cloud
+SQL API calls.
 
 The application doesn't have to know anything about how to connect to Cloud
 SQL, nor does it have to have any exposure to its API. The Cloud SQL Proxy
@@ -81,12 +84,15 @@ Cloud SQL Proxy container is running as a 'sidecar' container in the pod.
 with a Cloud SQL Proxy instance](docs/architecture-diagram.png)
 
 ## Prerequisites
+
 ### Supported Operating Systems
+
 * macOS
 * Linux
 * Google Cloud Shell
 
 ### Tools
+
 1. gcloud (Google Cloud SDK version >= 200.0.0)
 2. kubectl >= 1.8.6
 3. bash or bash compatible shell
@@ -98,13 +104,14 @@ roject>`
 If you don't have a Google Cloud account you can sign up for a [free account](https://cloud.google.com/).
 
 ## Deployment
+
 Deployment is fully automated except for a few prompts for user input. In order
 to deploy you need to run **create.sh** and follow the prompts. The script
 takes the following parameters, in order:
 * A name for your Cloud SQL instance
-* A username for the pgAdmin console
 * A username for a new Postgres user that you will use to connect to the
 instance with
+* A username for the pgAdmin console
 
 Example: `./create.sh INSTANCE_NAME POSTGRES_USERNAME PGADMIN_USERNAME`
 
@@ -116,29 +123,30 @@ Cloud SQL instance so the script manually polls for its completion instead.
 3. service_account.sh - creates the service account for the Cloud SQL Proxy
 container and creates the credentials file
 4. cluster.sh - Creates the Kubernetes Engine cluster
-5. configs_and_secrets.sh - creates the Kubernetes Engine secrets and configMap containing
-credentials and connection string for the Cloud SQL instance
+5. configs_and_secrets.sh - creates the Kubernetes Engine secrets and configMap
+containing credentials and connection string for the Cloud SQL instance
 6. pgadmin_deployment.sh - creates the pgAdmin4 pod
 7. expose.sh - creates the port forwarding to the pod so you can access it from
 your local machine
 
 The last step in **create.sh** is to port-forward to the running pod. You can
 [connect to the port-forwarded pgAdmin in your
-browser](http://127.0.0.1:8080/login). From there you can use the pgAdmin userna
-me
-and password you defined earlier to login to the console. From there you can
-click "Add New Server" and use the database username and password you created
-earlier to connect to 127.0.0.1:5432.
+browser](http://127.0.0.1:8080/login). Use the pgAdmin username in the "Email
+Address" field and password you defined earlier to login to the console.
+From there you can click "Add New Server" and use the database username and
+password you created earlier to connect to 127.0.0.1:5432.
 
 ## Validation
+
 Validation is fully automated. The validation script checks for the existence
-of the Cloud SQL instance, the Kubernetes Engine cluster, and the running pod. All of these
-resources should exist after the deployment script completes. In order to
-validate you need to run **validate.sh**. The script takes the following
-parameters, in order:
+of the Cloud SQL instance, the Kubernetes Engine cluster, and the running pod.
+All of these resources should exist after the deployment script completes. In
+order to validate you need to run **validate.sh**. The script takes the
+following parameters, in order:
 * INSTANCE_NAME - the name of the existing Cloud SQL instance
 
 ## Teardown
+
 Teardown is fully automated. The teardown script deletes every resource created
 in the deployment script. In order to teardown you need to run **teardown.sh**.
 The script takes the following parameters, in order:
@@ -151,6 +159,7 @@ The script takes the following parameters, in order:
 ## Troubleshooting
 
 ### Issue
+
 When creating a Cloud SQL instance you get the error:
 
 ```ERROR: (gcloud.sql.instances.create) Resource in project [...]
@@ -159,9 +168,7 @@ in an appropriate state to handle the request.
 ```
 
 ### Resolution
-You cannot reuse an instance name for up to a week after you have deleted an ins
-tance.
+
+You cannot reuse an instance name for up to a week after you have deleted an
+instance.
 https://cloud.google.com/sql/docs/mysql/delete-instance
-
-
-**This is not an officially supported Google product**
