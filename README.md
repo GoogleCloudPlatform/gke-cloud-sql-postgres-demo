@@ -22,7 +22,7 @@ This demo shows how easy it is to connect an application in Kubernetes Engine to
 a Cloud SQL instance using the Cloud SQL Proxy container as a sidecar container.
 You will deploy a [Kubernetes Engine](https://cloud.google.com/kubernetes-engine/) (Kubernetes Engine)
 cluster and a [Cloud SQL](https://cloud.google.com/sql/docs/) Postgres instance
-and use the [Cloud SQL Proxy container](gcr.io/cloudsql-docker/gce-proxy:1.11)
+and use the [Cloud SQL Proxy container](https://gcr.io/cloudsql-docker/gce-proxy:1.11)
 to allow communication between them.
 
 While this demo is focused on connecting to a Cloud SQL instance with a Cloud
@@ -38,14 +38,16 @@ Kubernetes Engine
 Cloud SQL instance and reduce your applications knowledge of your infrastructure
 
 #### Unprivileged service accounts
-By default all Kubernetes Engine nodes are assigned the default Compute Engine service
-account. This service account is fairly high privilege and has access to many
-GCP services. Because of the way the Google Cloud SDK is setup, software that
-you write will use the credentials assigned to the compute engine instance on which it
-is running. Since we don't want all of our containers to have the privileges
-that the default Compute Engine service account has, we need to make a
-least-privilege service account for our Kubernetes Engine nodes and then create more specific
-(but still least-privilege) service accounts for our containers.
+
+By default all Kubernetes Engine nodes are assigned the default Compute Engine
+service account. This service account is fairly high privilege and has access
+to many GCP services. Because of the way the Google Cloud SDK is setup, software
+that you write will use the credentials assigned to the compute engine instance
+on which it is running. Since we don't want all of our containers to have the
+privileges that the default Compute Engine service account has, we need to make
+a least-privilege service account for our Kubernetes Engine nodes and then
+create more specific (but still least-privilege) service accounts for our
+containers.
 
 #### Privileged service accounts in containers
 
@@ -65,9 +67,11 @@ pre-packaged by Google as a Docker container that you can run alongside your
 application container in the same Kubernetes Engine pod.
 
 ## Architecture
-The application and its sidecar container are deployed in a single Kubernetes (k8s) pod
-running on the only node in the Kubernetes Engine cluster. The application communicates with
-the Cloud SQL instance via the Cloud SQL Proxy process listening on localhost.
+
+The application and its sidecar container are deployed in a single Kubernetes
+(k8s) pod running on the only node in the Kubernetes Engine cluster. The
+application communicates with the Cloud SQL instance via the Cloud SQL Proxy
+process listening on localhost.
 
 The k8s manifest builds a single-replica Deployment object with two containers,
 pgAdmin and Cloud SQL Proxy. There are two secrets installed into the Kubernetes

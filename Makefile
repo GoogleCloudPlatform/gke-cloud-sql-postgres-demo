@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 # Make will use bash instead of sh
 SHELL := /usr/bin/env bash
 
@@ -58,11 +57,4 @@ check_trailing_whitespace:
 check_headers:
 	@echo "Checking file headers"
 	@python test/verify_boilerplate.py
-
-
-
-
-
-
-
 
