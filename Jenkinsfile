@@ -33,7 +33,7 @@ metadata:
 spec:
   containers:
   - name: k8s-node
-    image: gcr.io/pso-helmsman-cicd/jenkins-k8s-node:1.0.0
+    image: gcr.io/pso-helmsman-cicd/jenkins-k8s-node:1.0.1
     imagePullPolicy: Always
     command:
     - cat
@@ -64,27 +64,51 @@ spec:
     }
   }
 
+  environment {
+        GOOGLE_APPLICATION_CREDENTIALS    = '/home/jenkins/dev/jenkins-deploy-dev-infra.json'
+    }
+
 
   stages {
     stage('Setup access') {
       steps {
         container('k8s-node') {
-          script {
-                env.KEYFILE = "/home/jenkins/dev/jenkins-deploy-dev-infra.json"
-            }
+          // env.CLUSTER_ZONE will need to be updated to match the
+          // ZONE in the jenkins.propeties file
+          env.CLUSTER_ZONE = "${CLUSTER_ZONE}"
+          // env.PROJECT_ID will need to be updated to match your GCP
+          // development project id
+          env.PROJECT_ID = "${PROJECT_ID}"
+          env.REGION = "${REGION}"
           // Setup gcloud service account access
-          sh "gcloud auth activate-service-account --key-file=${env.KEYFILE}"
+          sh "gcloud auth activate-service-account --key-file=${env.GOOGLE_APPLICATION_CREDENTIALS}"
+          sh "gcloud config set compute/zone ${env.CLUSTER_ZONE}"
+          sh "gcloud config set core/project ${env.PROJECT_ID}"
+          sh "gcloud config set compute/region ${env.REGION}"
          }
         }
     }
 
-    stage('makeall') {
+    stage('Code linting') {
       steps {
         container('k8s-node') {
-          // Checkout code from repository
-          checkout scm
+          sh "make linting"
+        }
+      }
+    }
 
-          sh "make all"
+    stage('Create') {
+      steps {
+        container('k8s-node') {
+          sh "make create"
+        }
+      }
+    }
+
+    stage('Validate') {
+      steps {
+        container('k8s-node') {
+          sh "make validate"
         }
       }
     }

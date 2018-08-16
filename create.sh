@@ -56,18 +56,22 @@ if [ -z "$INSTANCE_REGION" ]; then
   exit 1
 fi
 
-echo "Enter a password for $USER_NAME"
-read -r USER_PASSWORD
-export USER_PASSWORD=$USER_PASSWORD
+if [ -z "$USER_PASSWORD" ]; then
+  echo "Enter a password for $USER_NAME"
+  read -r USER_PASSWORD
+  export USER_PASSWORD=$USER_PASSWORD
+fi
 
 if [ -z "$USER_PASSWORD" ] ; then
   echo "Password can't be blank or whitespace"
   exit 1
 fi
 
-echo "Enter a password for $PG_ADMIN_CONSOLE_EMAIL"
-read -r PG_ADMIN_CONSOLE_PASSWORD
-export PG_ADMIN_CONSOLE_PASSWORD=$PG_ADMIN_CONSOLE_PASSWORD
+if [ -z "$PG_ADMIN_CONSOLE_PASSWORD" ]; then
+  echo "Enter a password for $PG_ADMIN_CONSOLE_EMAIL"
+  read -r PG_ADMIN_CONSOLE_PASSWORD
+  export PG_ADMIN_CONSOLE_PASSWORD=$PG_ADMIN_CONSOLE_PASSWORD
+fi
 
 if [ -z "$PG_ADMIN_CONSOLE_PASSWORD" ] ; then
   echo "Password can't be blank or whitespace"
@@ -83,5 +87,4 @@ if "$ROOT"/scripts/prerequisites.sh; then
   "$ROOT"/scripts/cluster.sh
   "$ROOT"/scripts/configs_and_secrets.sh
   "$ROOT"/scripts/pgadmin_deployment.sh
-  "$ROOT"/scripts/expose.sh
 fi
