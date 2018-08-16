@@ -32,14 +32,4 @@ if [ -z "$INSTANCE_NAME" ] ; then
 fi
 
 "$ROOT"/scripts/delete_resources.sh
-
-# There is a prompt for the Cloud SQL instance because it takes a long time to
-# rebuild and you might not want to delete it if you are making changes to the
-# other scripts
-echo "Do you want to delete the Cloud SQL instance? y/n"
-read -r DELETE_INSTANCE
-if [ "$DELETE_INSTANCE" == "y" ]; then
-  "$ROOT"/scripts/delete_instance.sh
-else
-  echo "Not deleting the Cloud SQL instance"
-fi
+"$ROOT"/scripts/delete_instance.sh

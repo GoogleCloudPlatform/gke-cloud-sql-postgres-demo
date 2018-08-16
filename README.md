@@ -130,11 +130,10 @@ container and creates the credentials file
 5. configs_and_secrets.sh - creates the Kubernetes Engine secrets and configMap
 containing credentials and connection string for the Cloud SQL instance
 6. pgadmin_deployment.sh - creates the pgAdmin4 pod
-7. expose.sh - creates the port forwarding to the pod so you can access it from
-your local machine
 
-The last step in **create.sh** is to port-forward to the running pod. You can
-[connect to the port-forwarded pgAdmin in your
+Once **create.sh** is complete you need to run ```make expose``` to connect to
+the running pgAdmin pod. ```make expose``` will port-forward to the running pod.
+ You can [connect to the port-forwarded pgAdmin in your
 browser](http://127.0.0.1:8080/login). Use the pgAdmin username in the "Email
 Address" field and password you defined earlier to login to the console.
 From there you can click "Add New Server" and use the database username and
