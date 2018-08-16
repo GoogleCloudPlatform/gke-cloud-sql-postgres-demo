@@ -73,13 +73,15 @@ spec:
     stage('Setup access') {
       steps {
         container('k8s-node') {
-          // env.CLUSTER_ZONE will need to be updated to match the
-          // ZONE in the jenkins.propeties file
-          env.CLUSTER_ZONE = "${CLUSTER_ZONE}"
-          // env.PROJECT_ID will need to be updated to match your GCP
-          // development project id
-          env.PROJECT_ID = "${PROJECT_ID}"
-          env.REGION = "${REGION}"
+          script {
+            // env.CLUSTER_ZONE will need to be updated to match the
+            // ZONE in the jenkins.propeties file
+            env.CLUSTER_ZONE = "${CLUSTER_ZONE}"
+            // env.PROJECT_ID will need to be updated to match your GCP
+            // development project id
+            env.PROJECT_ID = "${PROJECT_ID}"
+            env.REGION = "${REGION}"
+          }
           // Setup gcloud service account access
           sh "gcloud auth activate-service-account --key-file=${env.GOOGLE_APPLICATION_CREDENTIALS}"
           sh "gcloud config set compute/zone ${env.CLUSTER_ZONE}"
