@@ -20,8 +20,8 @@
 # The second is for the GKE nodes and it gets the minimal permissions needed
 # for logging and monitoring as recommended by the GKE documentation
 
-SA_NAME=$USER-poc-sa
-NODE_SA_NAME=$USER-poc-node-sa
+SA_NAME=postgres-demo-sa
+NODE_SA_NAME=postgres-demo-node-sa
 PROJECT=$(gcloud config get-value core/project)
 
 if [ -z "$PROJECT" ]; then

@@ -19,7 +19,7 @@
 
 ROOT=$(dirname "${BASH_SOURCE[0]}")
 
-CLUSTER_NAME=$USER-poc-cluster
+CLUSTER_NAME=postgres-demo-cluster
 
 help() {
   echo "./validate.sh INSTANCE_NAME"

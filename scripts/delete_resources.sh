@@ -18,8 +18,8 @@
 # Cloud SQL instance takes a long time so deleting it is a separate step
 # that includes a prompt in another script
 
-SA_NAME=$USER-poc-sa
-NODE_SA_NAME=$USER-poc-node-sa
+SA_NAME=postgres-demo-sa
+NODE_SA_NAME=postgres-demo-node-sa
 PROJECT=$(gcloud config get-value core/project)
 CLUSTER_ZONE=$(gcloud config get-value compute/zone)
 
@@ -27,7 +27,7 @@ FULL_SA_NAME=$SA_NAME@$PROJECT.iam.gserviceaccount.com
 FULL_NODE_SA_NAME=$NODE_SA_NAME@$PROJECT.iam.gserviceaccount.com
 
 gcloud container clusters delete \
-"$USER"-poc-cluster --zone "$CLUSTER_ZONE" --quiet
+postgres-demo-cluster --zone "$CLUSTER_ZONE" --quiet
 
 gcloud projects remove-iam-policy-binding "$PROJECT" \
 --member serviceAccount:"$FULL_SA_NAME" \

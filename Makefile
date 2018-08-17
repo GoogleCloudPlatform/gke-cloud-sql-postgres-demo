@@ -18,12 +18,14 @@ SHELL := /usr/bin/env bash
 # All is the first target in the file so it will get picked up when you just run 'make' on its own
 linting: check_shell check_python check_golang check_terraform check_docker check_base_files check_headers check_trailing_whitespace
 
+SQLNAME := demo-postgres-3
+
 # The .PHONY directive tells make that this isn't a real target and so
 # the presence of a file named 'check_shell' won't cause this target to stop
 # working
 .PHONY: create
 create:
-	@source ./create.sh demo-postgres user user
+	@source ./create.sh $(SQLNAME) user user
 
 .PHONY: expose
 expose:
@@ -31,11 +33,11 @@ expose:
 
 .PHONY: validate
 validate:
-	@source ./validate.sh demo-postgres
+	@source ./validate.sh $(SQLNAME)
 
 .PHONY: teardown
 teardown:
-	@source ./teardown.sh demo-postgres
+	@source ./teardown.sh $(SQLNAME)
 
 .PHONY: check_shell
 check_shell:

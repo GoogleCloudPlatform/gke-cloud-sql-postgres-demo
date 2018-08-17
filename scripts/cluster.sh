@@ -19,7 +19,7 @@
 
 set -o errexit
 
-CLUSTER_NAME=$USER-poc-cluster
+CLUSTER_NAME=postgres-demo-cluster
 PROJECT=$(gcloud config get-value core/project)
 
 # This line is just to eliminate a warning that GKE behavior will change in the
@@ -35,7 +35,7 @@ gcloud container clusters create "$CLUSTER_NAME" \
 --num-nodes 1 \
 --enable-autorepair \
 --zone "$CLUSTER_ZONE" \
---service-account="$USER"-poc-node-sa@"$PROJECT".iam.gserviceaccount.com \
+--service-account="postgres-demo-node-sa@$PROJECT".iam.gserviceaccount.com \
 
 # Setting up .kube/config. This happens normally if you don't use --async
 gcloud container clusters get-credentials "$CLUSTER_NAME" --zone "$CLUSTER_ZONE"
