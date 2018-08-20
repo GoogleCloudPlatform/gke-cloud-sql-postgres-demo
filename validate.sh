@@ -18,16 +18,12 @@
 # make sure the Cloud SQL instance is up, as well as the GKE cluster and pod
 
 ROOT=$(dirname "${BASH_SOURCE[0]}")
-
-CLUSTER_NAME=$USER-poc-cluster
+source "${ROOT}"/scripts/constants.sh
 
 help() {
   echo "./validate.sh INSTANCE_NAME"
 }
 
-CLUSTER_ZONE=$(gcloud config get-value compute/zone)
-
-export CLUSTER_ZONE
 if [ -z "$CLUSTER_ZONE" ]; then
   echo "Make sure that compute/zone is set in gcloud config"
   exit 1

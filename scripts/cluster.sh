@@ -19,8 +19,10 @@
 
 set -o errexit
 
-CLUSTER_NAME=$USER-poc-cluster
-PROJECT=$(gcloud config get-value core/project)
+ROOT=$(dirname "${BASH_SOURCE[0]}")
+source "${ROOT}"/constants.sh
+
+
 
 # This line is just to eliminate a warning that GKE behavior will change in the
 # future. If we just set the new behavior now it doesn't warn us
@@ -35,7 +37,7 @@ gcloud container clusters create "$CLUSTER_NAME" \
 --num-nodes 1 \
 --enable-autorepair \
 --zone "$CLUSTER_ZONE" \
---service-account="$USER"-poc-node-sa@"$PROJECT".iam.gserviceaccount.com \
+--service-account="postgres-demo-node-sa@$PROJECT".iam.gserviceaccount.com \
 
 # Setting up .kube/config. This happens normally if you don't use --async
 gcloud container clusters get-credentials "$CLUSTER_NAME" --zone "$CLUSTER_ZONE"
