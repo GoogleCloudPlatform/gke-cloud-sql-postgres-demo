@@ -119,7 +119,6 @@ spec:
   post {
     always {
       container('k8s-node') {
-        sh 'gcloud auth revoke'
         sh 'make teardown'
       }
     }
