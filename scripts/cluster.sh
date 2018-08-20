@@ -19,8 +19,10 @@
 
 set -o errexit
 
-CLUSTER_NAME=postgres-demo-cluster
-PROJECT=$(gcloud config get-value core/project)
+ROOT=$(dirname "${BASH_SOURCE[0]}")
+source "${ROOT}"/constants.sh
+
+
 
 # This line is just to eliminate a warning that GKE behavior will change in the
 # future. If we just set the new behavior now it doesn't warn us

@@ -18,13 +18,8 @@
 # Cloud SQL instance takes a long time so deleting it is a separate step
 # that includes a prompt in another script
 
-SA_NAME=postgres-demo-sa
-NODE_SA_NAME=postgres-demo-node-sa
-PROJECT=$(gcloud config get-value core/project)
-CLUSTER_ZONE=$(gcloud config get-value compute/zone)
-
-FULL_SA_NAME=$SA_NAME@$PROJECT.iam.gserviceaccount.com
-FULL_NODE_SA_NAME=$NODE_SA_NAME@$PROJECT.iam.gserviceaccount.com
+ROOT=$(dirname "${BASH_SOURCE[0]}")
+source "${ROOT}"/constants.sh
 
 gcloud container clusters delete \
 postgres-demo-cluster --zone "$CLUSTER_ZONE" --quiet

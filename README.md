@@ -109,15 +109,21 @@ If you don't have a Google Cloud account you can sign up for a [free account](ht
 
 ## Deployment
 
-Deployment is fully automated except for a few prompts for user input. In order
-to deploy you need to run **create.sh** and follow the prompts. The script
+Deployment is fully automated. In order
+to deploy you need to run **create.sh**. The script
 takes the following parameters, in order:
 * A name for your Cloud SQL instance
 * A username for a new Postgres user that you will use to connect to the
 instance with
 * A username for the pgAdmin console
 
-Example: `./create.sh INSTANCE_NAME POSTGRES_USERNAME PGADMIN_USERNAME`
+The script requires the following environment variables to be defined:
+* USER_PASSWORD - the password to login to the Postgres instance
+* PG_ADMIN_CONSOLE_PASSWORD - the password to login to the pgAdmin UI
+
+Here is what it looks like to run **create.sh**:  
+
+```USER_PASSWORD=password PG_ADMIN_CONSOLE_PASSWORD=password ./create.sh INSTANCE_NAME POSTGRES_USERNAME PGADMIN_USERNAME```
 
 **create.sh** will run the following scripts:
 1. enable_apis.sh - enables the Kubernetes Engine API and Cloud SQL Admin API
