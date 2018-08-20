@@ -20,6 +20,7 @@
 set -o errexit
 
 ROOT=$(dirname "${BASH_SOURCE[0]}")
+# shellcheck disable=SC1090
 source "${ROOT}"/constants.sh
 
 

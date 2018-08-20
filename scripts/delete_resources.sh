@@ -19,6 +19,7 @@
 # that includes a prompt in another script
 
 ROOT=$(dirname "${BASH_SOURCE[0]}")
+# shellcheck disable=SC1090
 source "${ROOT}"/constants.sh
 
 gcloud container clusters delete \
