@@ -120,6 +120,7 @@ spec:
     always {
       container('k8s-node') {
         sh 'make teardown'
+        sh 'gcloud auth revoke'
       }
     }
   }
