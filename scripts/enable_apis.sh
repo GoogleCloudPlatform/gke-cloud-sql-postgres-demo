@@ -30,3 +30,4 @@ function enable_api() {
 
 enable_api sqladmin.googleapis.com
 enable_api container.googleapis.com
+enable_api iam.googleapis.com
