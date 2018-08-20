@@ -53,7 +53,7 @@ fi
 # This method involves giving the 'get' command the same manifest used to
 # create the object. It will find an object matching
 # the description in the manifest
-if ! kubectl get -f "$ROOT"/manifests/pgadmin-deployment.yaml > /dev/null; then
+if ! kubectl --namespace default get -f "$ROOT"/manifests/pgadmin-deployment.yaml > /dev/null; then
   echo "FAIL: pgAdmin4 Deployment object does not exist"
 else
   echo "pgAdmin4 Deployment object exists"

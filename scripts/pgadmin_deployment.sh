@@ -20,7 +20,7 @@
 
 ROOT=$(dirname "${BASH_SOURCE[0]}")
 
-kubectl create -f "$ROOT"/../manifests/pgadmin-deployment.yaml
+kubectl --namespace default create -f "$ROOT"/../manifests/pgadmin-deployment.yaml
 
 # Waiting for the pod to actually deploy correctly
-kubectl rollout status -f "$ROOT"/../manifests/pgadmin-deployment.yaml
+kubectl --namespace default rollout status -f "$ROOT"/../manifests/pgadmin-deployment.yaml
