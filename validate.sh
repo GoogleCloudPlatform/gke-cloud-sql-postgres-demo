@@ -18,6 +18,7 @@
 # make sure the Cloud SQL instance is up, as well as the GKE cluster and pod
 
 ROOT=$(dirname "${BASH_SOURCE[0]}")
+# shellcheck disable=SC1090
 source "${ROOT}"/scripts/constants.sh
 
 help() {

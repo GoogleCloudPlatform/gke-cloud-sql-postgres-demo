@@ -121,7 +121,7 @@ The script requires the following environment variables to be defined:
 * USER_PASSWORD - the password to login to the Postgres instance
 * PG_ADMIN_CONSOLE_PASSWORD - the password to login to the pgAdmin UI
 
-Here is what it looks like to run **create.sh**:  
+Here is what it looks like to run **create.sh**:
 
 ```USER_PASSWORD=password PG_ADMIN_CONSOLE_PASSWORD=password ./create.sh INSTANCE_NAME POSTGRES_USERNAME PGADMIN_USERNAME```
 

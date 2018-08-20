@@ -21,6 +21,7 @@
 # for logging and monitoring as recommended by the GKE documentation
 
 ROOT=$(dirname "${BASH_SOURCE[0]}")
+# shellcheck disable=SC1090
 source "${ROOT}"/constants.sh
 
 if [ -z "$PROJECT" ]; then
