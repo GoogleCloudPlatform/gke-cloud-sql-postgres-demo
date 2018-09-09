@@ -8,6 +8,8 @@
     * [Cloud SQL Proxy](#cloud-sql-proxy)
 * [Architecture](#architecture)
 * [Prerequisites](#prerequisites)
+  * [Run Demo in a Google Cloud Shell](#run-demo-in-a-google-cloud-shell)
+  * [Supported Operating Systems](#supported-operating-systems)
   * [Tools](#tools)
 * [Deployment](#deployment)
 * [Validation](#validation)
@@ -95,7 +97,32 @@ with a Cloud SQL Proxy instance](docs/architecture-diagram.png)
 * Linux
 * Google Cloud Shell
 
+## Prerequisites
+
+A Google Cloud account and project is required for this.  Access to an existing Google Cloud
+project with the Kubernetes Engine service enabled If you do not have a Google Cloud account
+please signup for a free trial [here](https://cloud.google.com).
+
+### Run Demo in a Google Cloud Shell
+
+Click the button below to run the demo in a [Google Cloud Shell](https://cloud.google.com/shell/docs/).
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/open?git_repo=https%3A%2F%2Fgithub.com%2FGoogleCloudPlatform%2Fgke-cloud-sql-postgres-demo&page=editor&tutorial=README.md)
+
+All the tools for the demo are installed. When using Cloud Shell execute the following
+command in order to setup gcloud cli.
+
+```console
+gcloud init
+```
+
+### Supported Operating Systems
+
+This project will run on macOS, Linux, or in a [Google Cloud Shell](https://cloud.google.com/shell/docs/).
+
 ### Tools
+
+When not using Cloud Shell, the following tools are required.
 
 1. gcloud (Google Cloud SDK version >= 200.0.0)
 2. kubectl >= 1.8.6
