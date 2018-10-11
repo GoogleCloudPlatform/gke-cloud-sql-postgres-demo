@@ -1,6 +1,6 @@
 # Files for Demo
 credentials.json
-instanceName
+.instance
 
 # OSX leaves these everywhere on SMB shares
 ._*

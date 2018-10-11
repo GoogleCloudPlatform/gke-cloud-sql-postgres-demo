@@ -19,13 +19,12 @@ SHELL := /usr/bin/env bash
 linting: check_shell check_python check_golang check_terraform check_docker check_base_files check_headers check_trailing_whitespace
 
 SQLNAME := demo-postgres-8
-
 # The .PHONY directive tells make that this isn't a real target and so
 # the presence of a file named 'check_shell' won't cause this target to stop
 # working
 .PHONY: create
 create:
-	@source ./create.sh $(SQLNAME) user user
+	@source ./create.sh user user
 
 .PHONY: expose
 expose:
@@ -33,11 +32,11 @@ expose:
 
 .PHONY: validate
 validate:
-	@source ./validate.sh $(SQLNAME)
+	@source ./validate.sh
 
 .PHONY: teardown
 teardown:
-	@source ./teardown.sh $(SQLNAME)
+	@source ./teardown.sh
 
 .PHONY: check_shell
 check_shell:

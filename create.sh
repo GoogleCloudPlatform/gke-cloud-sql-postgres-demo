@@ -19,23 +19,28 @@
 # some accompanying service accounts
 
 help() {
-  echo "./create.sh INSTANCE_NAME POSTGRES_USERNAME PGADMIN_USERNAME"
+  echo "./create.sh POSTGRES_USERNAME PGADMIN_USERNAME"
   echo "Passwords will be entered via prompts"
 }
 
-export INSTANCE_NAME=$1
+ROOT=$(dirname "${BASH_SOURCE[0]}")
+
+RANDOM_SUFFIX=$(tr -dc 'a-z0-9' </dev/urandom | fold -w 6 | head -n 1)
+export INSTANCE_NAME=demo-postgres-${RANDOM_SUFFIX}
+echo "$INSTANCE_NAME" > "${ROOT}"/.instance
+
 if [ -z "$INSTANCE_NAME" ] ; then
   help
   exit 1
 fi
 
-export USER_NAME=$2
+export USER_NAME=$1
 if [ -z "$USER_NAME" ] ; then
   help
   exit 1
 fi
 
-export PG_ADMIN_CONSOLE_EMAIL=$3
+export PG_ADMIN_CONSOLE_EMAIL=$2
 if [ -z "$PG_ADMIN_CONSOLE_EMAIL" ]; then
   help
   exit 1

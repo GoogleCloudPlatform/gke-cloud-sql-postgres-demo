@@ -30,7 +30,8 @@ if [ -z "$CLUSTER_ZONE" ]; then
   exit 1
 fi
 
-export INSTANCE_NAME=$1
+INSTANCE_NAME=$(cat "${ROOT}"/.instance)
+export INSTANCE_NAME
 if [ -z "$INSTANCE_NAME" ] ; then
   help
   exit 1
