@@ -47,6 +47,6 @@ fi
 
 # Making a Postgres user that is allowed to connect from any host
 gcloud sql users create "$USER_NAME" \
-'%' \
+--host '%' \
 --instance "$INSTANCE_NAME" \
 --password "$USER_PASSWORD"
