@@ -1,22 +1,26 @@
 # Connecting to Cloud SQL from an application in Kubernetes Engine
 
 ## Table of Contents
-
-* [Introduction](#introduction)
-    * [Unprivileged service accounts](#unprivileged-service-accounts)
-    * [Privileged service accounts in containers](#privileged-service-accounts-in-containers)
-    * [Cloud SQL Proxy](#cloud-sql-proxy)
-* [Architecture](#architecture)
-* [Prerequisites](#prerequisites)
-  * [Run Demo in a Google Cloud Shell](#run-demo-in-a-google-cloud-shell)
-  * [Supported Operating Systems](#supported-operating-systems)
-  * [Tools](#tools)
-* [Deployment](#deployment)
-* [Validation](#validation)
-* [Teardown](#teardown)
-* [Troubleshooting](#troubleshooting)
-  * [Issue](#issue)
-  * [Resolution](#resolution)
+<!-- TOC -->
+  * [Introduction](#introduction)
+     * [Unprivileged service accounts](#unprivileged-service-accounts)
+     * [Privileged service accounts in containers](#privileged-service-accounts-in-containers)
+     * [Cloud SQL Proxy](#cloud-sql-proxy)
+  * [Architecture](#architecture)
+  * [Prerequisites](#prerequisites)
+     * [Run Demo in a Google Cloud Shell](#run-demo-in-a-google-cloud-shell)
+     * [Supported Operating Systems](#supported-operating-systems)
+     * [Tools](#tools)
+        * [Install Cloud SDK](#install-cloud-sdk)
+        * [Install kubectl CLI](#install-kubectl-cli)
+     * [Authenticate gcloud](#authenticate-gcloud)
+  * [Deployment](#deployment)
+  * [Validation](#validation)
+  * [Teardown](#teardown)
+  * [Troubleshooting](#troubleshooting)
+     * [Issue](#issue)
+     * [Resolution](#resolution)
+<!-- TOC -->
 
 ## Introduction
 
@@ -39,7 +43,7 @@ Kubernetes Engine
 * How to use the Cloud SQL Proxy to offload the work of connecting to your
 Cloud SQL instance and reduce your applications knowledge of your infrastructure
 
-#### Unprivileged service accounts
+### Unprivileged service accounts
 
 By default all Kubernetes Engine nodes are assigned the default Compute Engine
 service account. This service account is fairly high privilege and has access
@@ -51,7 +55,7 @@ a least-privilege service account for our Kubernetes Engine nodes and then
 create more specific (but still least-privilege) service accounts for our
 containers.
 
-#### Privileged service accounts in containers
+### Privileged service accounts in containers
 
 The only two ways to get service account credentials are 1.) through your host
 instance, which as we discussed we don't want, or 2.) through a credentials
@@ -59,7 +63,7 @@ file. This demo will show you how to get this credentials file into your
 container running in Kubernetes Engine so your application has the privileges
 it needs.
 
-#### Cloud SQL Proxy
+### Cloud SQL Proxy
 
 The Cloud SQL Proxy allows you to offload the burden of creating and
 maintaining a connection to your Cloud SQL instance to the Cloud SQL Proxy
@@ -91,14 +95,6 @@ with a Cloud SQL Proxy instance](docs/architecture-diagram.png)
 
 ## Prerequisites
 
-### Supported Operating Systems
-
-* macOS
-* Linux
-* Google Cloud Shell
-
-## Prerequisites
-
 A Google Cloud account and project is required for this.  Access to an existing Google Cloud
 project with the Kubernetes Engine service enabled If you do not have a Google Cloud account
 please signup for a free trial [here](https://cloud.google.com).
@@ -110,7 +106,8 @@ Click the button below to run the demo in a [Google Cloud Shell](https://cloud.g
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/open?git_repo=https%3A%2F%2Fgithub.com%2FGoogleCloudPlatform%2Fgke-cloud-sql-postgres-demo&page=editor&tutorial=README.md)
 
 All the tools for the demo are installed. When using Cloud Shell execute the following
-command in order to setup gcloud cli.
+command in order to setup gcloud cli. When executing this command please setup your region
+and zone.
 
 ```console
 gcloud init
@@ -124,13 +121,31 @@ This project will run on macOS, Linux, or in a [Google Cloud Shell](https://clou
 
 When not using Cloud Shell, the following tools are required.
 
-1. gcloud (Google Cloud SDK version >= 200.0.0)
-2. kubectl >= 1.8.6
+1. [Google Cloud SDK (200.0.0 or later)](https://cloud.google.com/sdk/downloads)
+2. [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) >= 1.8.6
 3. bash or bash compatible shell
 4. A Google Cloud Platform project you have access to with the default network
 still intact
 5. Create a project and set core/project with `gcloud config set project <your_p
 roject>`
+
+#### Install Cloud SDK
+The Google Cloud SDK is used to interact with your GCP resources.
+[Installation instructions](https://cloud.google.com/sdk/downloads) for multiple platforms are available online.
+
+#### Install kubectl CLI
+
+The kubectl CLI is used to interteract with both Kubernetes Engine and kubernetes in general.
+[Installation instructions](https://cloud.google.com/kubernetes-engine/docs/quickstart)
+for multiple platforms are available online.
+
+### Authenticate gcloud
+
+Prior to running this demo, ensure you have authenticated your gcloud client by running the following command:
+
+```console
+gcloud auth application-default login
+```
 
 If you don't have a Google Cloud account you can sign up for a [free account](https://cloud.google.com/).
 
@@ -176,15 +191,32 @@ password you created earlier to connect to 127.0.0.1:5432.
 
 Validation is fully automated. The validation script checks for the existence
 of the Cloud SQL instance, the Kubernetes Engine cluster, and the running pod.
-All of these resources should exist after the deployment script completes. In
-order to validate you need to run **validate.sh**. The script takes the
-following parameters, in order:
+All of these resources should exist after the deployment script completes. Now that the application is deployed, we can validate these three deployments by executing:
+
+```console
+make validate
+```
+The script takes the following parameters, in order:
 * INSTANCE_NAME - the name of the existing Cloud SQL instance
+
+A successful output will look like this:
+```console
+Cloud SQL instance exists
+GKE cluster exists
+pgAdmin4 Deployment object exists
+```
 
 ## Teardown
 
 Teardown is fully automated. The teardown script deletes every resource created
-in the deployment script. In order to teardown you need to run **teardown.sh**.
+in the deployment script. In order to teardown you need to run,
+
+```console
+make teardown
+```
+
+It will run **teardown.sh** which will destroy all of the resources created for this demonstration.
+
 The script takes the following parameters, in order:
 * INSTANCE_NAME - the name of the existing Cloud SQL instance
 
