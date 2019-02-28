@@ -23,4 +23,4 @@ ROOT=$(dirname "${BASH_SOURCE[0]}")
 kubectl --namespace default create -f "$ROOT"/../manifests/pgadmin-deployment.yaml
 
 # Waiting for the pod to actually deploy correctly
-kubectl --namespace default rollout status --timeout=2m -f "$ROOT"/../manifests/pgadmin-deployment.yaml
+kubectl --namespace default rollout status --request-timeout="5m" -f "$ROOT"/../manifests/pgadmin-deployment.yaml
