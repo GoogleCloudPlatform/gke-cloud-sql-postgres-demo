@@ -154,9 +154,7 @@ If you don't have a Google Cloud account you can sign up for a [free account](ht
 Deployment is fully automated. In order
 to deploy you need to run **create.sh**. The script
 takes the following parameters, in order:
-* A name for your Cloud SQL instance
-* A username for a new Postgres user that you will use to connect to the
-instance with
+* A username for your Cloud SQL instance
 * A username for the pgAdmin console
 
 The script requires the following environment variables to be defined:
@@ -165,7 +163,7 @@ The script requires the following environment variables to be defined:
 
 Here is what it looks like to run **create.sh**:
 
-```USER_PASSWORD=password PG_ADMIN_CONSOLE_PASSWORD=password ./create.sh INSTANCE_NAME POSTGRES_USERNAME PGADMIN_USERNAME```
+```USER_PASSWORD=<password> PG_ADMIN_CONSOLE_PASSWORD=<password> ./create.sh <DATABASE_USER_NAME> <PGADMIN_USERNAME>```
 
 **create.sh** will run the following scripts:
 1. enable_apis.sh - enables the Kubernetes Engine API and Cloud SQL Admin API
@@ -182,10 +180,10 @@ containing credentials and connection string for the Cloud SQL instance
 Once **create.sh** is complete you need to run ```make expose``` to connect to
 the running pgAdmin pod. ```make expose``` will port-forward to the running pod.
  You can [connect to the port-forwarded pgAdmin in your
-browser](http://127.0.0.1:8080/login). Use the pgAdmin username in the "Email
-Address" field and password you defined earlier to login to the console.
-From there you can click "Add New Server" and use the database username and
-password you created earlier to connect to 127.0.0.1:5432.
+browser](http://127.0.0.1:8080/login). Use the ```<PGADMIN_USERNAME>``` in the "Email
+Address" field and ```<PG_ADMIN_CONSOLE_PASSWORD>``` you defined earlier to login to the console.
+From there you can click "Add New Server" and use the ```<DATABASE_USER_NAME>``` and
+```<USER_PASSWORD>``` you created earlier to connect to 127.0.0.1:5432.
 
 ## Validation
 
