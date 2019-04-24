@@ -25,6 +25,7 @@ help() {
 
 ROOT=$(dirname "${BASH_SOURCE[0]}")
 
+LC_CTYPE=C
 RANDOM_SUFFIX=$(tr -dc 'a-z0-9' </dev/urandom | fold -w 6 | head -n 1)
 export INSTANCE_NAME=demo-postgres-${RANDOM_SUFFIX}
 echo "$INSTANCE_NAME" > "${ROOT}"/.instance
