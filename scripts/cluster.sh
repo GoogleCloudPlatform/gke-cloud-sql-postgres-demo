@@ -23,13 +23,6 @@ ROOT=$(dirname "${BASH_SOURCE[0]}")
 # shellcheck disable=SC1090
 source "${ROOT}"/constants.sh
 
-
-
-# This line is just to eliminate a warning that GKE behavior will change in the
-# future. If we just set the new behavior now it doesn't warn us
-# We are using async again mainly for consistency
-gcloud config set container/new_scopes_behavior true > /dev/null
-
 GKE_VERSION=$(gcloud container get-server-config --zone "$CLUSTER_ZONE" \
   --format="value(validMasterVersions[0])")
 
