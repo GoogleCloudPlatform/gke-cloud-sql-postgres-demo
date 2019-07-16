@@ -172,13 +172,40 @@ container and creates the credentials file
 containing credentials and connection string for the Cloud SQL instance
 6. pgadmin_deployment.sh - creates the pgAdmin4 pod
 
-Once **create.sh** is complete you need to run ```make expose``` to connect to
-the running pgAdmin pod. ```make expose``` will port-forward to the running pod.
- You can [connect to the port-forwarded pgAdmin in your
-browser](http://127.0.0.1:8080/login). Use the ```<PGADMIN_USERNAME>``` in the "Email
-Address" field and ```<PG_ADMIN_CONSOLE_PASSWORD>``` you defined earlier to login to the console.
-From there you can click "Add New Server" and use the ```<DATABASE_USER_NAME>``` and
-```<USER_PASSWORD>``` you created earlier to connect to 127.0.0.1:5432.
+
+If you're running the demo within a cloud shell or any web apps using iframes,
+note that port-forwarding might not work.
+
+Hence, we need to use load balancer to expose the pod to connect to the instance.
+We also need to delete the services in the end to avoid unauthorized access.
+
+On the cloud shell:
+Get the Pod ID:
+POD_ID=$(kubectl --namespace default get pods -o name | cut -d '/' -f 2)
+
+Expose the pod via load balancer:
+kubectl expose pod $POD_ID --port=80 --type=LoadBalancer
+
+Get the service IP address:
+kubectl get svc
+
+NAME                                   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+kubernetes                             ClusterIP      <CLUSTER_IP>    <none>        443/TCP        96m
+pgadmin4-deployment-6769d76d4c-97kn8   LoadBalancer   <CLUSTER_IP>    <SVC_IP>      80:31789/TCP   45m
+
+You can connect to the pgAdmin in your browser, using <SVC_IP>.
+
+http://<SVC_IP>
+
+Use the <PGADMIN_USERNAME> in the "Email Address" field and <PG_ADMIN_CONSOLE_PASSWORD> you defined earlier to login to the console. From there you can click "Add New Server" and use the <DATABASE_USER_NAME> and <USER_PASSWORD> you created earlier to connect to 127.0.0.1:5432.
+
+After successful connection, delete the services to avoid unauthorized access:
+
+On the cloud shell, run:
+
+kubectl delete svc <SVC_NAME>
+
+
 
 ## Validation
 
