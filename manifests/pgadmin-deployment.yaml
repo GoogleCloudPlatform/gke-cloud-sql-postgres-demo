@@ -18,7 +18,7 @@
 # scripts. There is no Service because we are using a very simple port-forward
 # to access the pod.
 
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pgadmin4-deployment
